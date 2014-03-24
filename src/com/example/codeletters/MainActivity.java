@@ -1,6 +1,7 @@
 package com.example.codeletters;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -25,12 +26,16 @@ import com.google.android.glass.widget.CardScrollView;
 
 public class MainActivity extends Activity {
 	
-	public Map<String, String> listWU;
-	// Dictionary of Western Union Phonetic Letters
+	private Map<String, String> listWU; // Dictionary of Western Union Phonetic Letters
+	private ArrayList<Card> letterCardList; // List of Cards to scroll through
+	private CardScrollView letterCardListScrollView;
+
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
-    	listWU.put("A", "Adams");
+		super.onCreate(savedInstanceState);
+		
+		listWU.put("A", "Adams"); 
     	listWU.put("B", "Boston");
     	listWU.put("C", "Chicago");
     	listWU.put("D", "Denver");
@@ -55,16 +60,26 @@ public class MainActivity extends Activity {
     	listWU.put("W", "William");
     	listWU.put("Y", "Young");
     	listWU.put("Z", "Zero");
-		
+    	// it would be better to store this dictionary somewhere instead of
+    	// inputting values every time this program starts
+    	
     	displaySpeechRecognizer();
-		super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    
+    	// lifted wholesale from https://developers.google.com/glass/develop/gdk/ui/theme-widgets
+    	letterCardListScrollView = new CardScrollView(this);
+    	ExampleCardScrollAdapter adapter = new ExampleCardScrollAdapter();
+    	letterCardListScrollView.setAdapter(adapter);
+    	letterCardListScrollView.activate();
+    	setContentView(letterCardListScrollView);
+    	
+//        setContentView(R.layout.activity_main);
         
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
+        
+//        if (savedInstanceState == null) {
+//            getFragmentManager().beginTransaction()
+//                    .add(R.id.container, new PlaceholderFragment())
+//                    .commit();
+//        }
     }
 
     private static final int SPEECH_REQUEST = 0;
@@ -76,19 +91,25 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	
+    	// Takes spoken text and turns each letter into a card
     	
         if (requestCode == SPEECH_REQUEST && resultCode == RESULT_OK) {
             List<String> results = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
             String capturedWord = results.get(0);
-            mCards = new ArrayList<Card>;
+
+            Card letterCard;
             
             for (int i = 0; i < capturedWord.length(); i++){
             	
             	char capturedLetter = Character.toUpperCase(capturedWord.charAt(i));
             	// want to match it to uppercase keys
             	String phoneticLetter = listWU.get(capturedLetter);
+            	
+            	letterCard = new Card(this);
+            	letterCard.setText(phoneticLetter);
+            	letterCardList.add(letterCard);
+            	
             	
             }
             // break word into characters
@@ -102,40 +123,68 @@ public class MainActivity extends Activity {
     }
     
     
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+    private class ExampleCardScrollAdapter extends CardScrollAdapter {
+    	// lifted wholesale from https://developers.google.com/glass/develop/gdk/ui/theme-widgets
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
+        @Override
+        public int findIdPosition(Object id) {
+            return -1;
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
+        public int findItemPosition(Object item) {
+            return letterCardList.indexOf(item);
+        }
+
+        @Override
+        public int getCount() {
+            return letterCardList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return letterCardList.get(position);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return letterCardList.get(position).toView();
         }
     }
-
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+//
+//    /**
+//     * A placeholder fragment containing a simple view.
+//     */
+//    public static class PlaceholderFragment extends Fragment {
+//
+//        public PlaceholderFragment() {
+//        }
+//
+//        @Override
+//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                Bundle savedInstanceState) {
+//            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+//            return rootView;
+//        }
+//    }
+//
 }
