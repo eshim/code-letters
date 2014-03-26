@@ -26,8 +26,8 @@ import com.google.android.glass.widget.CardScrollView;
 
 public class MainActivity extends Activity {
 	
-	private Map<String, String> listWU; // Dictionary of Western Union Phonetic Letters
-	private ArrayList<Card> letterCardList; // List of Cards to scroll through
+	private Map<String, String> listWU = new HashMap<String, String>(); // Dictionary of Western Union Phonetic Letters
+	private ArrayList<Card> letterCardList = new ArrayList<Card>(); // List of Cards to scroll through
 	private CardScrollView letterCardListScrollView;
 
 	
@@ -104,7 +104,7 @@ public class MainActivity extends Activity {
             	
             	char capturedLetter = Character.toUpperCase(capturedWord.charAt(i));
             	// want to match it to uppercase keys
-            	String phoneticLetter = listWU.get(capturedLetter);
+            	String phoneticLetter = listWU.get(Character.toString(capturedLetter));
             	
             	letterCard = new Card(this);
             	letterCard.setText(phoneticLetter);
@@ -113,8 +113,8 @@ public class MainActivity extends Activity {
             	
             }
             // break word into characters
-            // match each character as a key to the dictionary
             // add each matching value to a list
+            // match each character as a key to the dictionary
             // put each list entry into a card
             // move to next card by either pronouncing the word displayed or swiping
             // end card is "Again?"
