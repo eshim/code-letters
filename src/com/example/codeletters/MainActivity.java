@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
 //            getFragmentManager().beginTransaction()
 //                    .add(R.id.container, new PlaceholderFragment())
 //                    .commit();
-//        }
+//        } 
     }
 
     private static final int SPEECH_REQUEST = 0;

@@ -3,7 +3,7 @@
     <string name="app_name">codeLetters</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="glass_voice_trigger">help me clarify</string>
-    <string name="glass_voice_prompt">spell out your letters</string>
+    <string name="glass_voice_trigger">help me spell</string>
+    <string name="glass_voice_prompt">what word do you need to clarify?</string>
 
 </resources>
