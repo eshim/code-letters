@@ -2,23 +2,16 @@ package com.example.codeletters;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 
 import com.google.android.glass.app.Card;
 import com.google.android.glass.widget.CardScrollAdapter;
@@ -34,6 +27,12 @@ public class MainActivity extends Activity {
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		
+		Card instructionCard = new Card(this);
+		instructionCard.setText("Swipe forward for phonetic spelling.");
+		letterCardList.add(instructionCard);
+		
 		
 		listWU.put("A", "Adams"); 
     	listWU.put("B", "Boston");
@@ -64,10 +63,10 @@ public class MainActivity extends Activity {
     	// it would be better to store this dictionary somewhere instead of
     	// inputting values every time this program starts
     	
-//    	displaySpeechRecognizer();
+    	displaySpeechRecognizer();
     
     	// transcribed text from voice prompt instead of activity
-		List<String> voiceResults = getIntent().getExtras()
+		/*List<String> voiceResults = getIntent().getExtras()
 				.getStringArrayList(RecognizerIntent.EXTRA_RESULTS);
 
         String capturedWord = voiceResults.get(0);
@@ -82,7 +81,7 @@ public class MainActivity extends Activity {
         	letterCard = new Card(this);
         	letterCard.setText(phoneticLetter);
         	letterCardList.add(letterCard);
-        }
+        }*/
     			
     	
     	// lifted wholesale from https://developers.google.com/glass/develop/gdk/ui/theme-widgets
