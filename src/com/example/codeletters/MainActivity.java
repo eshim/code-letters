@@ -58,13 +58,33 @@ public class MainActivity extends Activity {
     	listWU.put("U", "Union");
     	listWU.put("V", "Victor");
     	listWU.put("W", "William");
+    	listWU.put("X", "X-ray");
     	listWU.put("Y", "Young");
     	listWU.put("Z", "Zero");
     	// it would be better to store this dictionary somewhere instead of
     	// inputting values every time this program starts
     	
-    	displaySpeechRecognizer();
+//    	displaySpeechRecognizer();
     
+    	// transcribed text from voice prompt instead of activity
+		List<String> voiceResults = getIntent().getExtras()
+				.getStringArrayList(RecognizerIntent.EXTRA_RESULTS);
+
+        String capturedWord = voiceResults.get(0);
+		Card letterCard;
+        
+        for (int i = 0; i < capturedWord.length(); i++){
+        	
+        	char capturedLetter = Character.toUpperCase(capturedWord.charAt(i));
+        	// want to match it to uppercase keys
+        	String phoneticLetter = listWU.get(Character.toString(capturedLetter));
+        	
+        	letterCard = new Card(this);
+        	letterCard.setText(phoneticLetter);
+        	letterCardList.add(letterCard);
+        }
+    			
+    	
     	// lifted wholesale from https://developers.google.com/glass/develop/gdk/ui/theme-widgets
     	letterCardListScrollView = new CardScrollView(this);
     	ExampleCardScrollAdapter adapter = new ExampleCardScrollAdapter();
