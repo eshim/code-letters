@@ -29,9 +29,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		
-		Card instructionCard = new Card(this);
-		instructionCard.setText("Swipe forward for phonetic spelling.");
-		letterCardList.add(instructionCard);
+		
 		
 		
 		listWU.put("A", "Adams"); 
@@ -62,7 +60,7 @@ public class MainActivity extends Activity {
     	listWU.put("Z", "Zero");
     	// it would be better to store this dictionary somewhere instead of
     	// inputting values every time this program starts
-    	
+    	createCards();
     	displaySpeechRecognizer();
     
     	// transcribed text from voice prompt instead of activity
@@ -100,6 +98,12 @@ public class MainActivity extends Activity {
 //                    .commit();
 //        } 
     }
+	
+	private void createCards() { // ADDED
+		Card instructionCard = new Card(this);
+		instructionCard.setText("Swipe forward for phonetic spelling.");
+		letterCardList.add(instructionCard);
+	  }
 
     private static final int SPEECH_REQUEST = 0;
 
