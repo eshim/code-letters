@@ -86,14 +86,18 @@ public class MainActivity extends Activity {
             List<String> results = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
             String capturedWord = results.get(0);
-            Card letterCard;
+            
             
             for (int i = 0; i < capturedWord.length(); i++){
-            	char capturedLetter = Character.toUpperCase(capturedWord.charAt(i));
-            	String phoneticLetter = listWU.get(Character.toString(capturedLetter));
+            	Card letterCard = new Card(this);
+            	String phoneticLetter;
             	
-            	letterCard = new Card(this);
-            	letterCard.setText(phoneticLetter);
+            	char capturedLetter = Character.toUpperCase(capturedWord.charAt(i));
+            	if (capturedLetter != ' ') {
+            		phoneticLetter = listWU.get(Character.toString(capturedLetter));
+            		letterCard.setText(phoneticLetter);
+            	}
+        		letterCard.setFootnote(capturedWord);
             	letterCardList.add(letterCard);
             }
             adapter.notifyDataSetChanged();
